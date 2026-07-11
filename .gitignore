@@ -1,0 +1,47 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# --- Node / frontend ---
+node_modules/
+dist/
+build/
+.vite/
+*.local
+
+# --- Environment ---
+.env
+.env.*
+!.env.example
+
+# --- Data (large, licensed, or gitignored by policy) ---
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# --- ML artifacts (track with DVC or release assets, not git) ---
+ml/artifacts/*
+!ml/artifacts/.gitkeep
+*.pt
+*.pkl
+*.onnx
+*.h5
+
+# --- Notebooks: keep .ipynb, drop outputs on commit (jupytext or nbstripout) ---
+# nothing to ignore, but see .pre-commit-config.yaml for nbstripout
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
