@@ -1,0 +1,33 @@
+{
+  "classification": {
+    "predictions": [
+      { "label": "smartphone", "confidence": 0.9137 },
+      { "label": "tablet", "confidence": 0.0421 },
+      { "label": "camera", "confidence": 0.0198 },
+      { "label": "headphones", "confidence": 0.0155 },
+      { "label": "laptop", "confidence": 0.0089 }
+    ]
+  },
+  "detection": {
+    "boxes": [
+      { "label": "battery",   "confidence": 0.87, "bbox": [128, 402, 610, 720] },
+      { "label": "mainboard", "confidence": 0.79, "bbox": [140, 120, 588, 380] },
+      { "label": "camera",    "confidence": 0.82, "bbox": [420,  40, 560, 110] },
+      { "label": "connector", "confidence": 0.68, "bbox": [220, 730, 330, 780] }
+    ],
+    "image_size": [720, 800]
+  },
+  "risk": {
+    "score": 0.6412,
+    "top_contributors": [
+      { "feature": "source_concentration",       "shap":  0.184, "direction": "up" },
+      { "feature": "country_risk",               "shap":  0.121, "direction": "up" },
+      { "feature": "historic_disruption_count",  "shap": -0.052, "direction": "down" }
+    ],
+    "features_used": [
+      "distance_km", "tariff_pct", "trade_value_log",
+      "country_risk", "source_concentration",
+      "historic_disruption_count", "free_zone_flag"
+    ]
+  }
+}
