@@ -11,6 +11,7 @@ from routes.classify import bp as classify_bp
 from routes.detect import bp as detect_bp
 from routes.health import bp as health_bp
 from routes.risk import bp as risk_bp
+from routes.version import bp as version_bp
 
 load_dotenv()
 
@@ -19,7 +20,7 @@ def create_app() -> Flask:
     app = Flask(__name__)
     CORS(app, resources={r"/api/*": {"origins": os.getenv("CORS_ORIGINS", "*")}})
 
-    for bp in (health_bp, classify_bp, detect_bp, risk_bp):
+    for bp in (health_bp, version_bp, classify_bp, detect_bp, risk_bp):
         app.register_blueprint(bp, url_prefix="/api")
 
     @app.get("/")
@@ -30,6 +31,7 @@ def create_app() -> Flask:
                 "version": "0.1.0",
                 "endpoints": [
                     "/api/health",
+                    "/api/version",
                     "/api/classify",
                     "/api/detect-components",
                     "/api/risk-score",
