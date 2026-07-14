@@ -1,17 +1,16 @@
-"""ChainScope Flask API.
-
-Boots the app, mounts blueprints, and loads model artifacts via the
-model registry. Endpoints deliberately stay thin — heavy lifting lives
-in `services/` and the model artifacts under `../ml/artifacts/`.
-"""
+"""ChainScope Flask API."""
 from __future__ import annotations
 
 import os
+
+from dotenv import load_dotenv
 from flask import Flask, jsonify
 from flask_cors import CORS
-from dotenv import load_dotenv
 
+from routes.classify import bp as classify_bp
+from routes.detect import bp as detect_bp
 from routes.health import bp as health_bp
+from routes.risk import bp as risk_bp
 
 load_dotenv()
 
@@ -20,7 +19,8 @@ def create_app() -> Flask:
     app = Flask(__name__)
     CORS(app, resources={r"/api/*": {"origins": os.getenv("CORS_ORIGINS", "*")}})
 
-    app.register_blueprint(health_bp, url_prefix="/api")
+    for bp in (health_bp, classify_bp, detect_bp, risk_bp):
+        app.register_blueprint(bp, url_prefix="/api")
 
     @app.get("/")
     def root():
@@ -28,7 +28,12 @@ def create_app() -> Flask:
             {
                 "name": "ChainScope API",
                 "version": "0.1.0",
-                "docs": "/api/health",
+                "endpoints": [
+                    "/api/health",
+                    "/api/classify",
+                    "/api/detect-components",
+                    "/api/risk-score",
+                ],
             }
         )
 
