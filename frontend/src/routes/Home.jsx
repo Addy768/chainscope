@@ -6,7 +6,7 @@ import Skeleton from "../components/Skeleton.jsx";
 import SupplyChainGlobe from "../components/SupplyChainGlobe.jsx";
 import Uploader from "../components/Uploader.jsx";
 import { api } from "../lib/api.js";
-import { useDemo } from "../lib/demoMode.js";
+import { useDemo } from "../lib/demoMode.jsx";
 
 export default function Home() {
   const { demo, sample } = useDemo();

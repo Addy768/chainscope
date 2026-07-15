@@ -1,6 +1,6 @@
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
-import { DemoProvider, useDemo } from "./lib/demoMode.js";
+import { DemoProvider, useDemo } from "./lib/demoMode.jsx";
 import Home from "./routes/Home.jsx";
 import Metrics from "./routes/Metrics.jsx";
 import About from "./routes/About.jsx";
