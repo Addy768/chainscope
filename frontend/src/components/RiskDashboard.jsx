@@ -1,39 +1,57 @@
-export default function RiskDashboard({ score, contributors }) {
-  const pct = Math.round((score ?? 0) * 100);
-  const color = pct < 34 ? "bg-good" : pct < 67 ? "bg-warn" : "bg-bad";
+import { motion } from "framer-motion";
+import { ArrowDownRight, ArrowUpRight, Cpu } from "lucide-react";
+import RiskGauge from "./RiskGauge.jsx";
+
+const prettyName = (s) =>
+  s.replace(/_/g, " ").replace(/\bscaled\b/g, "").trim();
+
+export default function RiskDashboard({ score, tier, contributors, backend }) {
   return (
-    <div className="rounded-2xl border border-border bg-panel p-4">
-      <h3 className="mb-3 text-sm uppercase tracking-widest text-muted">
-        risk_model // score + top SHAP contributors
-      </h3>
-      <div className="mb-4">
-        <div className="mb-1 flex items-baseline justify-between">
-          <span className="text-4xl font-bold">{pct}</span>
-          <span className="text-sm text-muted">/ 100</span>
-        </div>
-        <div className="h-2 rounded-full bg-border">
-          <div
-            className={`h-full rounded-full ${color}`}
-            style={{ width: `${pct}%` }}
-          />
-        </div>
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="card-glow p-5"
+    >
+      <div className="mb-4 flex items-center justify-between">
+        <h3 className="flex items-center gap-2 text-xs uppercase tracking-widest text-muted">
+          <Cpu size={14} className="text-accent" />
+          risk_model // score + top contributors
+        </h3>
+        {backend && (
+          <span className="rounded-full border border-border px-2 py-0.5 text-[10px] uppercase text-muted">
+            {backend.replace(/_/g, " ")}
+          </span>
+        )}
       </div>
-      <ul className="space-y-2 text-sm">
-        {(contributors || []).map((c) => (
-          <li key={c.feature} className="flex items-center gap-2">
-            <span
-              className={`inline-block h-2 w-2 rounded-full ${
-                c.direction === "up" ? "bg-bad" : "bg-good"
-              }`}
-            />
-            <span className="flex-1 font-mono text-muted">{c.feature}</span>
-            <span className="font-mono">
-              {c.shap > 0 ? "+" : ""}
-              {c.shap}
-            </span>
-          </li>
-        ))}
-      </ul>
-    </div>
+
+      <div className="mb-6 flex items-center justify-around">
+        <RiskGauge score={score} tier={tier} />
+        <ul className="space-y-2 text-sm">
+          {(contributors || []).map((c, i) => (
+            <motion.li
+              key={c.feature}
+              initial={{ opacity: 0, x: 8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 + i * 0.08 }}
+              className="flex items-center gap-2"
+            >
+              {c.direction === "up" ? (
+                <ArrowUpRight size={14} className="text-bad" />
+              ) : (
+                <ArrowDownRight size={14} className="text-good" />
+              )}
+              <span className="min-w-[140px] font-mono text-muted">
+                {prettyName(c.feature)}
+              </span>
+              <span className="font-mono">
+                {c.shap > 0 ? "+" : ""}
+                {c.shap}
+              </span>
+            </motion.li>
+          ))}
+        </ul>
+      </div>
+    </motion.div>
   );
 }
